@@ -1,4 +1,10 @@
+
 from setuptools import setup, find_packages
+try:
+    from wheel.bdist_wheel import bdist_wheel
+    cmdclass = {'bdist_wheel': bdist_wheel}
+except ImportError:
+    cmdclass = {}
 
 setup(
     name="pystealthrunner",
@@ -13,12 +19,14 @@ setup(
     packages=find_packages(),
     python_requires=">=3.6",
     install_requires=[
+
     ],
     extras_require={
         "dev": [
             "pytest",
             "build",
-            "twine"
+            "twine",
+            "wheel"
         ]
     },
     classifiers=[
@@ -31,6 +39,6 @@ setup(
         "Topic :: Software Development :: Libraries :: Application Frameworks",
     ],
     include_package_data=True,
-    entry_points={
-    },
+    # No entry_points needed for this package
+    cmdclass=cmdclass
 )
