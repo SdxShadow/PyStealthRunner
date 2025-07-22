@@ -76,7 +76,15 @@ class ScriptManager:
         try:
             if sys.platform == "win32":
                 DETACHED_PROCESS = 0x00000008
-                proc = subprocess.Popen([sys.executable, script_path], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, env=env, cwd=cwd, creationflags=DETACHED_PROCESS)
+                CREATE_NO_WINDOW = 0x08000000
+                creationflags = DETACHED_PROCESS | CREATE_NO_WINDOW
+                # Use pythonw.exe if available to suppress all windows
+                pythonw = sys.executable.replace("python.exe", "pythonw.exe")
+                if os.path.exists(pythonw):
+                    exe = pythonw
+                else:
+                    exe = sys.executable
+                proc = subprocess.Popen([exe, script_path], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, env=env, cwd=cwd, creationflags=creationflags)
             else:
                 proc = subprocess.Popen([sys.executable, script_path], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, env=env, cwd=cwd, start_new_session=True)
             self.processes[proc.pid] = proc
