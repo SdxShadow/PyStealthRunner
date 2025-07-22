@@ -6,14 +6,9 @@ import json
 PORT = int(os.environ.get("PYSTEALTH_PORT", 50506))
 
 def get_socket():
-    if sys.platform == "win32":
-        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        s.settimeout(5)
-        s.connect(("127.0.0.1", PORT))
-    else:
-        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        s.settimeout(5)
-        s.connect(("127.0.0.1", PORT))
+    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    s.settimeout(5)
+    s.connect(("127.0.0.1", PORT))
     return s
 
 def send_command(cmd):
